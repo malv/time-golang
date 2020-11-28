@@ -17,12 +17,16 @@ func main() {
 
 	dao.SetDao(g)
 	service.SetService(g)
+	config.Connected()
+	e.Use(service.MiddlewareCredential)
 
 	controller.SetInit(e)
 	controller.SetLeaveController(e)
 	controller.SetPermitController(e)
 	controller.SetOvertimeController(e)
 	controller.SetLeaveRequestController(e)
+	controller.SetPermitRequestController(e)
+	controller.SetOvertimeRequestController(e)
 	echo.Logger.Fatal(echo.Start(":9999"))
 }
 
