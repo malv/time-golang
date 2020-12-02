@@ -40,6 +40,11 @@ func (OvertimeRequestDao) GetOvertimeRequestByID(id string) (data model.Overtime
 func (OvertimeRequestDao) AddOvertimeRequest(data *model.OvertimeRequest) (e error) {
 	defer config.CatchError(&e)
 
+	data.CreatedBy = data.EmployeeID
+	data.UpdatedBy = &data.EmployeeID
+	data.UpdatedAt = data.CreatedAt
+	data.Status = "P"
+
 	result := g.Create(data)
 
 	if result.Error != nil {

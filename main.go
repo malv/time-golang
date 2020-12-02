@@ -17,7 +17,12 @@ func main() {
 
 	dao.SetDao(g)
 	service.SetService(g)
+	// connect for jtw / credential
 	config.Connected()
+
+	//  connect to employee server
+	config.EmployeeHostConnection()
+
 	e.Use(service.MiddlewareCredential)
 
 	controller.SetInit(e)
@@ -27,6 +32,10 @@ func main() {
 	controller.SetLeaveRequestController(e)
 	controller.SetPermitRequestController(e)
 	controller.SetOvertimeRequestController(e)
+
+	// proto
+	controller.SetEmployeeController(e)
+
 	echo.Logger.Fatal(echo.Start(":9999"))
 }
 

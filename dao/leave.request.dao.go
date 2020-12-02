@@ -40,6 +40,11 @@ func (LeaveRequestDao) GetLeaveRequestByID(id string) (data model.LeaveRequest, 
 func (LeaveRequestDao) AddLeaveRequest(data *model.LeaveRequest) (e error) {
 	defer config.CatchError(&e)
 
+	data.CreatedBy = data.EmployeeID
+	data.UpdatedBy = &data.EmployeeID
+	data.UpdatedAt = data.CreatedAt
+	data.Status = "P"
+
 	result := g.Create(data)
 
 	if result.Error != nil {

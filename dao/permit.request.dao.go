@@ -40,6 +40,11 @@ func (PermitRequestDao) GetPermitRequestByID(id string) (data model.PermitReques
 func (PermitRequestDao) AddPermitRequest(data *model.PermitRequest) (e error) {
 	defer config.CatchError(&e)
 
+	data.CreatedBy = data.EmployeeID
+	data.UpdatedBy = &data.EmployeeID
+	data.UpdatedAt = data.CreatedAt
+	data.Status = "P"
+
 	result := g.Create(data)
 
 	if result.Error != nil {

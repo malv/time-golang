@@ -11,6 +11,7 @@ import (
 
 // Timestamp ...
 type Timestamp time.Time
+type Date time.Time
 
 // BaseModel ...
 type BaseModel struct {
@@ -52,9 +53,40 @@ func (t *Timestamp) UnmarshalJSON(data []byte) error {
 	return err
 }
 
+// UnmarshalJSON ...
+func (t *Date) UnmarshalJSON(data []byte) error {
+	var timeStr = string(data)
+	if timeStr == "null" || timeStr == `""` {
+		return nil
+	}
+	if len(timeStr) > 0 && timeStr[0] == '"' {
+		timeStr = timeStr[1:]
+	}
+	if len(timeStr) > 0 && timeStr[len(timeStr)-1] == '"' {
+		timeStr = timeStr[:len(timeStr)-1]
+	}
+
+	layout := "2006-01-02"
+
+	ts, err := time.Parse(layout, timeStr)
+	*t = Date(ts)
+
+	log.Println("ts:", ts)
+	log.Println("timeStr", timeStr)
+	log.Println("t", t)
+	return err
+}
+
 // MarshalJSON ...
 func (t *Timestamp) MarshalJSON() ([]byte, error) {
 	//do your serializing here
 	stamp := fmt.Sprintf("\"%s\"", time.Time(*t).Format("2006-01-02 15:04:05"))
+	return []byte(stamp), nil
+}
+
+// MarshalJSON ...
+func (t *Date) MarshalJSON() ([]byte, error) {
+	//do your serializing here
+	stamp := fmt.Sprintf("\"%s\"", time.Time(*t).Format("2006-01-02"))
 	return []byte(stamp), nil
 }
