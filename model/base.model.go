@@ -9,8 +9,10 @@ import (
 	"gorm.io/gorm"
 )
 
-// Timestamp ...
+// Timestamp ... ( yyyy-MM-dd HH:mm:ss )
 type Timestamp time.Time
+
+// Date ... ( yyyy-MM-dd )
 type Date time.Time
 
 // BaseModel ...
